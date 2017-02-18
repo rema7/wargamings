@@ -62,7 +62,7 @@ export class Players extends React.Component {
                     <tbody>
                     {
                         players.map((player,i) => {
-                            return <TableRow player={player}/>
+                            return <TableRow key={i.toString()} player={player}/>
                         })
                     }
                     </tbody>

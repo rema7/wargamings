@@ -4,12 +4,25 @@
 import React from 'react'
 
 class ComparedTableRow extends React.Component {
+
+    compareField(value1, value2) {
+        if (value1 > value2)
+            return 'bg-success';
+        else if (value1 == value2)
+            return 'bg-warning';
+        else if (value1 < value2)
+            return 'bg-danger';
+        else
+            return ''
+    }
+
     render() {
         const {first, second} = this.props;
         const {firstRating, secondRating} = {
             'firstRating': (first.wins_total / first.days_total).toFixed(2),
             'secondRating': (second.wins_total / second.days_total).toFixed(2)
         };
+
         const {firstAvg, secondAvg} = {
             'firstAvg': (first.exp_total / first.days_total).toFixed(2),
             'secondAvg': (second.exp_total / second.days_total).toFixed(2)
@@ -17,27 +30,13 @@ class ComparedTableRow extends React.Component {
 
         return <tr>
             <td>{first.name}</td>
-            <td className={(
-                firstRating > secondRating ? 'bg-success' :
-                    firstRating == secondRating ? 'bg-warning' : 'bg-danger')}>{firstRating}</td>
-            <td className={(
-                first.wins_total > second.wins_total ? 'bg-success' :
-                    first.wins_total == second.wins_total ? 'bg-warning' : 'bg-danger')}>{first.wins_total}</td>
-            <td className={(
-                firstAvg > secondAvg ? 'bg-success' :
-                    firstAvg > secondAvg ? 'bg-warning' : 'bg-danger')}>{firstAvg}</td>
-            <td className={(
-                first.exp_total > second.exp_total ? 'bg-success' :
-                    first.exp_total == second.exp_total ? 'bg-warning' : 'bg-danger')}>{first.exp_total}</td>
-            <td className={(
-                first.battles_total > second.battles_total ? 'bg-success' :
-                    first.battles_total == second.battles_total ? 'bg-warning' : 'bg-danger')}>{first.battles_total}</td>
-            <td className={(
-                first.vehicles_x > second.vehicles_x ? 'bg-success' :
-                    first.vehicles_x == second.vehicles_x ? 'bg-warning' : 'bg-danger')}>{first.vehicles_x}</td>
-            <td className={(
-                first.days_total > second.days_total ? 'bg-success' :
-                    first.days_total == second.days_total ? 'bg-warning' : 'bg-danger')}>{first.days_total}</td>
+            <td className={(this.compareField(firstRating,secondRating))}>{firstRating}</td>
+            <td className={(this.compareField(first.wins_total, second.wins_total))}>{first.wins_total}</td>
+            <td className={this.compareField(firstAvg,secondAvg)}>{firstAvg}</td>
+            <td className={this.compareField(first.exp_total, second.exp_total)}>{first.exp_total}</td>
+            <td className={this.compareField(first.battles_total, second.battles_total)}>{first.battles_total}</td>
+            <td className={this.compareField(first.vehicles_x, second.vehicles_x)}>{first.vehicles_x}</td>
+            <td className={this.compareField(first.days_total, second.days_total)}>{first.days_total}</td>
         </tr>
     }
 }
@@ -45,22 +44,25 @@ class ComparedTableRow extends React.Component {
 export class ComparePlayers extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {firstValue: 'Stephen', secondValue: 'Michelle'};
+        this.state = {firstPlayer: 'Stephen', secondPlayer: 'Michelle'};
         this.state.result = [];
     }
 
-    handleFirstChange(event) {
-        this.setState({firstValue: event.target.value});
-    }
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
 
-    handleSecondChange(event) {
-        this.setState({secondValue: event.target.value});
+        this.setState({
+            [name]: value
+        });
+        this.setState({firstPlayer: event.target.value});
     }
 
     onSubmit() {
         const {players} = this.props.playersList;
-        const firstPlayer = this.state.firstValue;
-        const secondPlayer = this.state.secondValue;
+        const {firstPlayer, secondPlayer} = this.state;
+
         this.setState({firstNotFound: true});
         this.setState({secondNotFound: true});
 
@@ -95,8 +97,8 @@ export class ComparePlayers extends React.Component {
         let rows = [];
 
         if (result.length > 0) {
-            rows.push(<ComparedTableRow first={result[0]} second={result[1]}/>);
-            rows.push(<ComparedTableRow first={result[1]} second={result[0]}/>);
+            rows.push(<ComparedTableRow key={0} first={result[0]} second={result[1]}/>);
+            rows.push(<ComparedTableRow key={1} first={result[1]} second={result[0]}/>);
         }
 
         return (
@@ -106,19 +108,19 @@ export class ComparePlayers extends React.Component {
                         <label>First player</label>
                         <input className="form-control"
                                type="text"
-                               name="name"
+                               name="firstValue"
                                placeholder="Enter first player name"
-                               defaultValue={this.state.firstValue}
-                               onChange={::this.handleFirstChange}/>
+                               defaultValue={this.state.firstPlayer}
+                               onChange={::this.handleInputChange}/>
                     </div>
                     <div className={'form-group ' + (this.state.secondNotFound ? 'has-danger' : '')}>
                         <label>Second player</label>
                         <input className="form-control"
                                type="text"
-                               name="name"
+                               name="secondValue"
                                placeholder="Enter second player name"
-                               defaultValue={this.state.secondValue}
-                               onChange={::this.handleSecondChange}/>
+                               defaultValue={this.state.secondPlayer}
+                               onChange={::this.handleInputChange}/>
                     </div>
                 </form>
                 <div className="form-group">
@@ -126,7 +128,7 @@ export class ComparePlayers extends React.Component {
                 </div>
                 <div className="result-table">
                     <div className="players-table">
-                        <table className="table table-hover">
+                        <table className="table table-hover table-bordered">
                             <thead className="thead-default">
                             <tr>
                                 <th>Name</th>
@@ -140,7 +142,7 @@ export class ComparePlayers extends React.Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {rows}
+                                {rows}
                             </tbody>
                         </table>
                     </div>
