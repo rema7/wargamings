@@ -35,7 +35,11 @@ export function fetchPlayers() {
 export function fetchPlayersSuccess(players) {
     return {
         type: FETCH_PLAYERS_SUCCESS,
-        payload: players
+        payload: players.map((player) => {
+            player.rating = (player.wins_total/player.days_total).toFixed(3);
+            player.avg_exp = (player.exp_total/player.days_total).toFixed(3);
+            return player
+        })
     };
 }
 

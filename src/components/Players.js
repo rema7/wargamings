@@ -13,11 +13,12 @@ class TableRow extends React.Component {
         return <tr key={player.id}>
             <td>{player.id}</td>
             <td>{player.name}</td>
-            <td>{(player.wins_total/player.days_total).toFixed(3)}</td>
+            <td>{player.rating}</td>
             <td>{player.wins_total}</td>
-            <td>{(player.exp_total/player.days_total).toFixed(3)}</td>
+            <td>{player.avg_exp}</td>
             <td>{player.exp_total}</td>
             <td>{player.battles_total}</td>
+            <td>{player.vehicles_x}</td>
             <td>{player.days_total}</td>
             <td>
                 <input type="checkbox" disabled="true" checked={player.is_hidden}/>
@@ -28,7 +29,6 @@ class TableRow extends React.Component {
 
 export class Players extends React.Component {
     componentWillMount() {
-        // this.props.fetchPlayers();
     }
 
     onClick(e) {
@@ -55,6 +55,7 @@ export class Players extends React.Component {
                         <th>Avg exp</th>
                         <th>Experience</th>
                         <th>Battles</th>
+                        <th>Vehicle</th>
                         <th>Days</th>
                         <th>Hidden</th>
                     </tr>

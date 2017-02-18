@@ -18,21 +18,12 @@ class ComparedTableRow extends React.Component {
 
     render() {
         const {first, second} = this.props;
-        const {firstRating, secondRating} = {
-            'firstRating': (first.wins_total / first.days_total).toFixed(2),
-            'secondRating': (second.wins_total / second.days_total).toFixed(2)
-        };
-
-        const {firstAvg, secondAvg} = {
-            'firstAvg': (first.exp_total / first.days_total).toFixed(2),
-            'secondAvg': (second.exp_total / second.days_total).toFixed(2)
-        };
 
         return <tr>
             <td>{first.name}</td>
-            <td className={(this.compareField(firstRating,secondRating))}>{firstRating}</td>
-            <td className={(this.compareField(first.wins_total, second.wins_total))}>{first.wins_total}</td>
-            <td className={this.compareField(firstAvg,secondAvg)}>{firstAvg}</td>
+            <td className={this.compareField(first.rating,second.rating)}>{first.rating}</td>
+            <td className={this.compareField(first.wins_total, second.wins_total)}>{first.wins_total}</td>
+            <td className={this.compareField(first.avg_exp, second.avg_exp)}>{first.avg_exp}</td>
             <td className={this.compareField(first.exp_total, second.exp_total)}>{first.exp_total}</td>
             <td className={this.compareField(first.battles_total, second.battles_total)}>{first.battles_total}</td>
             <td className={this.compareField(first.vehicles_x, second.vehicles_x)}>{first.vehicles_x}</td>
