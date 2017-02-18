@@ -23,6 +23,7 @@ class TableRow extends React.Component {
             <td>
                 <input type="checkbox" disabled="true" checked={player.is_hidden}/>
             </td>
+            <td>{player.created_at}</td>
         </tr>
     }
 }
@@ -59,6 +60,7 @@ export class Players extends React.Component {
                         <th>Vehicle</th>
                         <th>Days</th>
                         <th>Hidden</th>
+                        <th>Created</th>
                     </tr>
                     </thead>
                     <tbody>

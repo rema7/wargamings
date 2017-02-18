@@ -28,6 +28,7 @@ class ComparedTableRow extends React.Component {
             <td className={this.compareField(first.battles_total, second.battles_total)}>{first.battles_total}</td>
             <td className={this.compareField(first.vehicles_x, second.vehicles_x)}>{first.vehicles_x}</td>
             <td className={this.compareField(first.days_total, second.days_total)}>{first.days_total}</td>
+            <td>{first.created_at}</td>
         </tr>
     }
 }
@@ -35,7 +36,7 @@ class ComparedTableRow extends React.Component {
 export class ComparePlayers extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {firstPlayer: 'Stephen', secondPlayer: 'Michelle'};
+        this.state = {firstPlayer: 'John', secondPlayer: 'James'};
         this.state.firstInput = {error: false, message: ''};
         this.state.secondInput = {error: false, message: ''};
         this.state.result = [];
@@ -169,6 +170,7 @@ export class ComparePlayers extends React.Component {
                                 <th>Battles</th>
                                 <th>Vehicles</th>
                                 <th>Days</th>
+                                <th>Created</th>
                             </tr>
                             </thead>
                             <tbody>

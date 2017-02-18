@@ -3,6 +3,7 @@
  */
 import {GET_PLAYERS} from "../constants/index";
 import axios from 'axios';
+import moment from "moment";
 
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const FETCH_PLAYERS_SUCCESS = 'FETCH_PLAYERS_SUCCESS';
@@ -38,6 +39,7 @@ export function fetchPlayersSuccess(players) {
         payload: players.map((player) => {
             player.rating = (player.wins_total/player.days_total).toFixed(3);
             player.avg_exp = (player.exp_total/player.days_total).toFixed(3);
+            player.created_at = moment(player.created_at).format('MMM Do YYYY');
             return player
         })
     };
