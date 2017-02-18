@@ -31,7 +31,8 @@ export class Players extends React.Component {
     componentWillMount() {
     }
 
-    onClick(e) {
+    onRefresh() {
+        this.props.fetchPlayers();
     }
 
     render() {

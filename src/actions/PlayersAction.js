@@ -13,12 +13,12 @@ export const FETCH_PLAYERS_FAILURE = 'FETCH_PLAYERS_FAILURE';
 // export const FETCH_PLAYERS_FAILURE = 'FETCH_PLAYERS_FAILURE';
 
 
-const ROOT_URL = 'localhost:8000';
+const ROOT_URL = 'http://localhost:8000';
 
 export function fetchPlayers() {
     const request = axios({
         method: 'get',
-        url: 'http://127.0.0.1:8000/players',
+        url: `${ROOT_URL}/players`,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
