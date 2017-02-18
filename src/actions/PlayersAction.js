@@ -9,11 +9,6 @@ export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const FETCH_PLAYERS_SUCCESS = 'FETCH_PLAYERS_SUCCESS';
 export const FETCH_PLAYERS_FAILURE = 'FETCH_PLAYERS_FAILURE';
 
-// export const FETCH_PLAYERS = 'FETCH_PLAYERS';
-// export const FETCH_PLAYERS_SUCCESS = 'FETCH_PLAYERS_SUCCESS';
-// export const FETCH_PLAYERS_FAILURE = 'FETCH_PLAYERS_FAILURE';
-
-
 const ROOT_URL = 'http://localhost:8000';
 
 export function fetchPlayers() {
