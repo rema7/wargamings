@@ -36,6 +36,8 @@ export class ComparePlayers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {firstPlayer: 'Stephen', secondPlayer: 'Michelle'};
+        this.state.firstInput = {error: false, message: ''};
+        this.state.secondInput = {error: false, message: ''};
         this.state.result = [];
     }
 
@@ -47,27 +49,62 @@ export class ComparePlayers extends React.Component {
         this.setState({
             [name]: value
         });
-        this.setState({firstPlayer: event.target.value});
     }
+
+    makeInputError(isError, message, second=false) {
+        if (!second)
+            this.setState({ firstInput: {error: isError, message: message}});
+        else
+            this.setState({ secondInput: {error: isError, message: message}});
+    }
+
+    fireFirstInputError(message) {
+        this.makeInputError(true, message);
+    }
+
+    dropFirstInputError() {
+        this.makeInputError(false, '');
+    }
+
+    isFirstInputError() {
+        return this.state.firstInput.error
+    }
+
+    fireSecondInputError(message) {
+        this.makeInputError(true, message, true);
+    }
+
+    dropSecondInputError() {
+        this.makeInputError(false, '', true);
+    }
+
+    isSecondInputError() {
+        return this.state.secondInput.error
+    }
+
 
     onSubmit() {
         const {players} = this.props.playersList;
         const {firstPlayer, secondPlayer} = this.state;
 
-        this.setState({firstNotFound: true});
-        this.setState({secondNotFound: true});
+        this.fireFirstInputError('Player not found.');
+        this.fireSecondInputError('Player not found.');
 
         let res = players.filter((player) => {
             if (player.name == firstPlayer) {
                 if (!player.is_hidden) {
-                    this.setState({firstNotFound: false});
+                    this.dropFirstInputError();
                     return player;
+                } else {
+                    this.fireFirstInputError('Player is hidden.');
                 }
             }
             else if (player.name == secondPlayer) {
                 if (!player.is_hidden) {
-                    this.setState({secondNotFound: false});
+                    this.dropSecondInputError();
                     return player;
+                } else {
+                    this.fireSecondInputError('Player is hidden.');
                 }
             }
         });
@@ -95,23 +132,25 @@ export class ComparePlayers extends React.Component {
         return (
             <div>
                 <form>
-                    <div className={'form-group ' + (this.state.firstNotFound ? 'has-danger' : '')}>
+                    <div className={'form-group ' + (this.isFirstInputError() ? 'has-danger' : '')}>
                         <label>First player</label>
                         <input className="form-control"
                                type="text"
-                               name="firstValue"
+                               name="firstPlayer"
                                placeholder="Enter first player name"
                                defaultValue={this.state.firstPlayer}
                                onChange={::this.handleInputChange}/>
+                        <small className="form-control-feedback">{this.state.firstInput.message}</small>
                     </div>
-                    <div className={'form-group ' + (this.state.secondNotFound ? 'has-danger' : '')}>
+                    <div className={'form-group ' + (this.isSecondInputError() ? 'has-danger' : '')}>
                         <label>Second player</label>
                         <input className="form-control"
                                type="text"
-                               name="secondValue"
+                               name="secondPlayer"
                                placeholder="Enter second player name"
                                defaultValue={this.state.secondPlayer}
                                onChange={::this.handleInputChange}/>
+                        <small className="form-control-feedback">{this.state.secondInput.message}</small>
                     </div>
                 </form>
                 <div className="form-group">
@@ -139,7 +178,6 @@ export class ComparePlayers extends React.Component {
                     </div>
                 </div>
             </div>
-
         )
     }
 }
